@@ -59,6 +59,7 @@ func run(ctx context.Context) error {
 		// app=tag-sandbox,tx=rw1,
 		_, err = client.ReadWriteTransaction(ctx, []spannerplus.Tag{{"tx", "rw1"}},
 			func(ctx context.Context, transaction *spannerplus.ReadWriteTransactionWrapper) error {
+				// app=tag-sandbox,tx=rw1,h=f0e76052
 				err := transaction.QueryWithHash(ctx, spanner.NewStatement("@{LOCK_SCANNED_RANGES=exclusive} SELECT FirstName, LastName FROM Singers")).Do(nop)
 				time.Sleep(1 * time.Second)
 				return err
@@ -70,6 +71,7 @@ func run(ctx context.Context) error {
 		// app=tag-sandbox,tx=rw2
 		_, err = client.ReadWriteTransactionTagString(ctx, "tx=rw2",
 			func(ctx context.Context, transaction *spannerplus.ReadWriteTransactionWrapper) error {
+				// app=tag-sandbox,tx=rw2,h=f0e76052
 				err := transaction.QueryWithHash(ctx,
 					spanner.NewStatement("@{LOCK_SCANNED_RANGES=exclusive} SELECT FirstName, LastName FROM Singers")).Do(nop)
 				time.Sleep(1 * time.Second)
@@ -82,6 +84,7 @@ func run(ctx context.Context) error {
 		// app=tag-sandbox,tx=rw3
 		_, err = client.ReadWriteTransaction(ctx, []spannerplus.Tag{{"tx", "rw3"}},
 			func(ctx context.Context, transaction *spannerplus.ReadWriteTransactionWrapper) error {
+				// app=tag-sandbox,tx=rw3,h=69daf312
 				err := transaction.QueryWithHash(ctx,
 					spanner.NewStatement("@{LOCK_SCANNED_RANGES=exclusive} SELECT BirthDate FROM Singers")).Do(nop)
 				time.Sleep(1 * time.Second)
