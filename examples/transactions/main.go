@@ -49,8 +49,12 @@ func run(ctx context.Context) error {
 		return err
 	}
 
+	FindAllSingers := func(ctx context.Context, tx *spannerplus.ReadOnlyTransactionWrapper) error {
+		return tx.QueryWithTags(ctx, spanner.NewStatement("SELECT * FROM Singers"), spannerplus.Tag{"query", "FindAllSingers"}).Do(nop)
+	}
+
 	// app=tag-sandbox,tx=ro1,query=FindAllSingers
-	if err = tx.QueryWithTags(ctx, spanner.NewStatement("SELECT * FROM Singers"), spannerplus.Tag{"query", "FindAllSingers"}).Do(nop); err != nil {
+	if err = FindAllSingers(ctx, tx); err != nil {
 		return err
 	}
 
